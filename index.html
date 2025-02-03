@@ -27,6 +27,9 @@
             transform: scale(1.02);
         }
 
+
+      
+
         #serviceForm{
             
           width: 30vw;
@@ -106,6 +109,30 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+
+        @media (max-width: 1024px) {
+    .form-container ,  #serviceForm{
+        width: 70%;
+    }
+}
+
+/* Phones (Width: Below 768px) */
+@media (max-width: 767px) {
+    .form-container {
+        width: 90%;
+    }
+
+    #serviceForm{
+        width: 80vw;
+    }
+}
+
+#check{
+    color: #23902b;
+    font-weight: bold;
+    font-size: large;
+}
     </style>
 </head>
 <body>
@@ -113,7 +140,7 @@
         <h2>Kepsten Sale Data Manager</h2>
         <form id="serviceForm" name="submit-to-google-sheet">
             <label for="customerName">Name of the Customer</label>
-            <input type="text" id="customerName" name="name" required>
+            <input type="text" id="customerName" name="name" onchange="checkDuplicate()" required>
             
             <label for="city">City</label>
             <input type="text" id="city" name="city" required>
@@ -154,8 +181,10 @@
             
             
             
-            <button type="submit">Submit</button>
+            <button type="submit" id="submitform">Submit</button>
         </form>
+
+        <span id="check"></span>
     </div>
 
     <!-- Loader Popup -->
@@ -163,6 +192,33 @@
         <div class="loader"></div>
     </div>
     <script>
+ 
+
+const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQezvhvtrtXZ9Nv48a4yQQclEeaW1nUOqWF_0g9dV2Ef4scfCXCkf_Xgo7aYinW9ifO46--_9afuArO/pub?output=csv';
+
+let existingNames = []; // Array to store names from Column A
+
+// Fetch data from Google Sheets (CSV format)
+fetch(sheetUrl)
+  .then(response => response.text())
+  .then(csvText => {
+    const rows = csvText.split("\n").map(row => row.split(",")); // Convert CSV to array
+    existingNames = rows.slice(1).map(row => row[0].trim().toLowerCase()); // Store Column A values
+    
+  })
+  .catch(error => console.error('Error fetching data:', error));
+
+function checkDuplicate() {
+    const inputName = document.getElementById('customerName').value.trim().toLowerCase(); // Get input value
+    let button = document.getElementById("submitform");
+    if (existingNames.includes(inputName)) {
+        button.disabled = true;
+        alert('Duplicate Entry: This entry name already exists in the database.');
+    } else {
+        button.disabled = false;
+    }
+}
+
         
         function toggleDiscountField() {
             let discountField = document.getElementById("discountAmountField");
@@ -200,8 +256,8 @@
 
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzJ9Udsq3rndmRyp8H0hWik5wy3uTcu64Y4yQfLHgRex0KtJnZYegVtbyMG0tykUCfo1g/exec'
   const form = document.forms['submit-to-google-sheet']
-//const sus = document.getElementById('ss');
-let loaderPopup = document.getElementById("loaderPopup");
+  const sus = document.getElementById('check');
+  let loaderPopup = document.getElementById("loaderPopup");
      
 
   form.addEventListener('submit', e => {
@@ -214,7 +270,7 @@ let loaderPopup = document.getElementById("loaderPopup");
   setTimeout(function()
   {
     loaderPopup.classList.remove("active");
-    //sus.innerHTML="You’re all set! 💌 Get ready for a Valentine’s Day full of love and surprises.";
+    sus.innerHTML = "✅ Entery submited to database.";
   },100)
   form.reset();
     })
