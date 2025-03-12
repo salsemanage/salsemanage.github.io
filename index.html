@@ -285,5 +285,26 @@ function checkDuplicate() {
 document.querySelector("#submitb").addEventListener("click", playSound);
 
     </script>
+
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCqFetSr27YHlCdXlrRnf6SIrdrcV4Dfw0",
+    authDomain: "testing-d6e0d.firebaseapp.com",
+    databaseURL: "https://testing-d6e0d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "testing-d6e0d",
+    storageBucket: "testing-d6e0d.firebasestorage.app",
+    messagingSenderId: "783952764338",
+    appId: "1:783952764338:web:37527f8064f3328954d8ab"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
 </body>
 </html>
